@@ -9,7 +9,7 @@ WORKDIR /app
 ENV GRPC_LIB_PATH=/root/.local/grpc
 ENV RCSC_LIB_PATH=/root/.local/rcsc
 
-COPY code /app/code
+COPY . /app/code
 RUN cd /app/code \
     && export PATH="$GRPC_LIB_PATH/bin:$RCSC_LIB_PATH/bin:$PATH" \
     && export LD_LIBRARY_PATH=$GRPC_LIB_PATH/lib:$RCSC_LIB_PATH/lib:$LD_LIBRARY_PATH \
