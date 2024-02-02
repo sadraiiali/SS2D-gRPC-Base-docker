@@ -43,7 +43,7 @@ ENV G_IP=0.0.0.0
 ENV G_PORT=50051
 
 COPY --from=BUILD /app/bin /app/bin
-COPY ./docker-entrypoint.sh /app
+COPY images/rcss2d-grpc-agent/docker-entrypoint.sh /app
 CMD ["bash", "/app/docker-entrypoint.sh"]
 
 
