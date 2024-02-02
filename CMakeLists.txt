@@ -15,8 +15,30 @@ if(NOT CMAKE_BUILD_TYPE)
 endif()
 set(CMAKE_CXX_FLAGS "-W -Wall")
 
+
+
+
+list(APPEND CMAKE_PREFIX_PATH "${GRPC_LIB_PATH}")
+set(LIBRARY_PATH "${GRPC_LIB_PATH}/lib")
+link_directories(${LIBRARY_PATH})
+
+find_package(absl CONFIG REQUIRED)
+find_package(Protobuf CONFIG REQUIRED)
+find_package(gRPC CONFIG REQUIRED)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${Protobuf_INCLUDE_DIRS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${gRPC_INCLUDE_DIRS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${absl_INCLUDE_DIRS}")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -I${GRPC_LIB_PATH}/include")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -L${GRPC_LIB_PATH}/lib")
+
+
+set(PROTO_FILES
+    grpc/protos/service.proto
+)
+
+
 # check librcsc
-set(LIBRCSC_INSTALL_DIR "$ENV{HOME}/.local;$ENV{HOME}/local" CACHE PATH "The path where librcsc is installed.")
+set(LIBRCSC_INSTALL_DIR "$ENV{RCSC_LIB_PATH};$ENV{HOME}/.local;$ENV{HOME}/local;/usr/local/lib" CACHE PATH "The path where librcsc is installed.")
 
 find_library(LIBRCSC_LIB NAMES rcsc
   PATHS ${LIBRCSC_INSTALL_DIR}
@@ -69,6 +91,23 @@ message(STATUS "  LIBRCSC_LIB=${LIBRCSC_LIB}")
 message(STATUS "  LIBRCSC_INCLUDE_DIR=${LIBRCSC_INCLUDE_DIR}")
 message(STATUS "Build settings:")
 message(STATUS "  BUILD_TYPE=${CMAKE_BUILD_TYPE}")
+message(STATUS "Found Protobuf:")
+message(STATUS "  Protobuf_INCLUDE_DIRS=${Protobuf_INCLUDE_DIRS}")
+message(STATUS "  Protobuf_LIBRARIES=${Protobuf_LIBRARIES}")
+message(STATUS "  Protobuf_PROTOC_EXECUTABLE=${Protobuf_PROTOC_EXECUTABLE}")
+message(STATUS "  Protobuf_VERSION=${Protobuf_VERSION}")
+message(STATUS "Found gRPC:")
+message(STATUS "  gRPC_INCLUDE_DIRS=${gRPC_INCLUDE_DIRS}")
+message(STATUS "  gRPC_LIBRARIES=${gRPC_LIBRARIES}")
+message(STATUS "  gRPC_VERSION=${gRPC_VERSION}")
+message(STATUS "Found absl:")
+message(STATUS "  absl_INCLUDE_DIRS=${absl_INCLUDE_DIRS}")
+message(STATUS "  absl_LIBRARIES=${absl_LIBRARIES}")
+message(STATUS "  absl_VERSION=${absl_VERSION}")
 
 # sub directories
 add_subdirectory(src)
+
+
+include_directories("${GRPC_LIB_PATH}/include/google/protobuf")
+add_definitions("${GRPC_LIB_PATH}/include/google/protobuf")
