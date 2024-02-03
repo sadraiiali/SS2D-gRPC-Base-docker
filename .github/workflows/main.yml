@@ -11,6 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       base_changed: ${{ steps.filter.outputs.base_changed }}
+      code_changed: ${{ steps.filter.outputs.code_changed }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -20,6 +21,15 @@ jobs:
           filters: |
             base:
               - 'images/rcss2d-grpc-base/**'
+            code:
+              - 'grpc/**'
+              - 'images/rcss2d-grpc-agent/**'
+              - 'm4/**'
+              - 'src/**'
+              - 'ssil/**'
+              - 'cmake-config.h.in'
+              - 'CMakeLists.txt'
+            
 
   base:
     needs: check
@@ -52,10 +62,19 @@ jobs:
           tags: sadraiiali/rcss2d-grpc-base:ubuntu-24.04
             
   agent:
-    needs: [check, base]
+    needs: check
+    if: needs.check.outputs.code_changed == 'true'
     runs-on: ubuntu-latest
     name: Build & Push GRPC Agent
     steps:
+      - if: needs.check.outputs.base_changed == 'true'
+        uses: actions/wait-for-check-action@v1.1.0
+        id: wait-for-build
+        with:
+          ref: ${{ github.ref }}
+          checkName: "Build & Push GRPC Build Base"
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          timeoutSeconds: 600
       -
         name: Checkout
         uses: actions/checkout@v4
