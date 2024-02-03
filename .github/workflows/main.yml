@@ -57,7 +57,7 @@ jobs:
 
   agent:
     needs: check
-    if: needs.check.outputs.code_changed == 'true'
+    if: needs.check.outputs.code_changed == 'true' || needs.check.outputs.base_changed == 'true'
     runs-on: ubuntu-latest
     name: Build & Push GRPC Agent
     steps:
