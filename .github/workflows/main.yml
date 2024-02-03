@@ -5,8 +5,6 @@ on:
     branches:
       - "master"
 
-
-
 env:
   BASE_IMAGE: sadraiiali/rcss2d-grpc-base
   BASE_TAG: ubuntu-24.04
@@ -81,11 +79,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.BASE_IMAGE }}
-          readme-filepath : ./images/rcss2d-grpc-base/README.md
+          readme-filepath: ./images/rcss2d-grpc-base/README.md
           short-description: "Base image for build rcss2d-grpc-agent"
 
   agent:
-    needs: [check,base]
+    needs: [check, base]
     if: needs.check.outputs.code_changed == 'true' || needs.check.outputs.agent_readme_changed == 'true'  || needs.check.outputs.base_changed == 'true'
     runs-on: ubuntu-latest
     name: Build & Push GRPC Agent
@@ -105,15 +103,14 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push GRPC Agent
-        if: needs.check.outputs.code_changed == 'true'  || needs.check.outputs.base_changed == 'true' 
+        if: needs.check.outputs.code_changed == 'true'  || needs.check.outputs.base_changed == 'true'
         uses: docker/build-push-action@v5
         with:
           context: .
           file: ./images/rcss2d-grpc-agent/Dockerfile
           push: true
           tags: "${{ env.AGENT_IMAGE }}:${{ env.AGENT_TAG }}"
-      
-        
+
       - name: Docker Hub Description
         if: needs.check.outputs.agent_readme_changed == 'true'
         uses: peter-evans/dockerhub-description@v4
@@ -121,5 +118,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.AGENT_IMAGE }}
-          readme-filepath : ./images/rcss2d-grpc-agent/README.md
+          readme-filepath: ./images/rcss2d-grpc-agent/README.md
           short-description: "Agent image for rcss2d-grpc-server"
