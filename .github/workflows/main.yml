@@ -32,10 +32,13 @@ jobs:
 
   base:
     needs: check
-    if: needs.check.outputs.base_changed == 'true'
     runs-on: ubuntu-latest
     name: Build & Push GRPC Build Base
     steps:
+      - name: Skip if no changes
+        if: ${{ needs.check.outputs.base_changed == 'false' }}
+        run: exit 0
+
       - name: Checkout
         uses: actions/checkout@v4
       # - name: Set up QEMU
