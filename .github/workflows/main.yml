@@ -62,9 +62,13 @@ jobs:
     name: Build & Push GRPC Agent
     steps:
       - if: needs.check.outputs.base_changed == 'true'
-        name: Wait for other jobs to pass or fail
-        uses: kachick/wait-other-jobs@fe30bb3fc06912519e744b0eaa638f17a9953685 # v2.0.2
-        timeout-minutes: 10
+        name: Wait for Build Base
+        uses: lewagon/wait-on-check-action@v1.3.1
+        with:
+          ref: ${{ github.ref }}
+          check-name: 'base'
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          wait-interval: 10
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up QEMU
