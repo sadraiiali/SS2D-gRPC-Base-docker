@@ -71,7 +71,6 @@ jobs:
         uses: actions/wait-for-check-action@v1.1.0
         id: wait-for-build
         with:
-          ref: ${{ github.ref }}
           checkName: "Build & Push GRPC Build Base"
           repoToken: ${{ secrets.GITHUB_TOKEN }}
           timeoutSeconds: 600
