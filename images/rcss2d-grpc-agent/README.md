@@ -14,3 +14,6 @@ You can use it by address : `sadraiiali/rcss2d-grpc-agent:latest`.
 You can use this image as a base image for building your team. 
 but also you can use this image to run a grpc agent then connect to it using your local code.
 
+
+## License
+This project is licensed under the MIT License.
