@@ -31,16 +31,18 @@ jobs:
           filters: |
             base:
               - 'images/rcss2d-grpc-base/**'
+              - '!images/rcss2d-grpc-agent/README.md'
+            base_readme:
+              - 'images/rcss2d-grpc-base/README.md'
             code:
               - 'grpc/**'
               - 'images/rcss2d-grpc-agent/**'
+              - '!images/rcss2d-grpc-agent/README.md'
               - 'm4/**'
               - 'src/**'
               - 'ssil/**'
               - 'cmake-config.h.in'
               - 'CMakeLists.txt'
-            base_readme:
-              - 'images/rcss2d-grpc-base/README.md'
             agent_readme:
               - 'images/rcss2d-grpc-agent/README.md'
 
