@@ -7,7 +7,7 @@ echo " Copyright 2000-2007.  Hidehisa Akiyama"
 echo " Copyright 2007-2011.  Hidehisa Akiyama and Hiroki Shimora"
 echo " All rights reserved."
 echo "******************************************************************"
-echo "dumy change"
+echo "dumy change2"
 
 LIBPATH=@LIBRCSC_LIBDIR@
 if [ x"$LIBPATH" != x ]; then
