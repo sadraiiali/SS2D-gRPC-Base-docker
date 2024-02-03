@@ -20,6 +20,8 @@ jobs:
     outputs:
       base_changed: ${{ steps.filter.outputs.base }}
       code_changed: ${{ steps.filter.outputs.code }}
+      base_readme_changed: ${{ steps.filter.outputs.base_readme }}
+      agent_readme_changed: ${{ steps.filter.outputs.agent_readme }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -37,6 +39,10 @@ jobs:
               - 'ssil/**'
               - 'cmake-config.h.in'
               - 'CMakeLists.txt'
+            base_readme:
+              - 'images/rcss2d-grpc-base/README.md'
+            agent_readme:
+              - 'images/rcss2d-grpc-agent/README.md'
 
   base:
     needs: check
@@ -68,7 +74,7 @@ jobs:
           tags: "${{ env.BASE_IMAGE }}:${{ env.BASE_TAG }}"
 
       - name: Docker Hub Description
-        if: needs.check.outputs.base_changed == 'true'
+        if: needs.check.outputs.base_readme_changed == 'true'
         uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -79,22 +85,26 @@ jobs:
 
   agent:
     needs: [check,base]
-    if: needs.check.outputs.code_changed == 'true' || needs.check.outputs.base_changed == 'true'
+    if: needs.check.outputs.code_changed == 'true' || needs.check.outputs.agent_readme_changed == 'true'  || needs.check.outputs.base_changed == 'true'
     runs-on: ubuntu-latest
     name: Build & Push GRPC Agent
     steps:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up QEMU
+        if: needs.check.outputs.code_changed == 'true'  || needs.check.outputs.base_changed == 'true'
         uses: docker/setup-qemu-action@v3
       - name: Set up Docker Buildx
+        if: needs.check.outputs.code_changed == 'true'  || needs.check.outputs.base_changed == 'true'
         uses: docker/setup-buildx-action@v3
       - name: Login to Docker Hub
+        if: needs.check.outputs.code_changed == 'true'  || needs.check.outputs.base_changed == 'true'
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
       - name: Build and push GRPC Agent
+        if: needs.check.outputs.code_changed == 'true'  || needs.check.outputs.base_changed == 'true' 
         uses: docker/build-push-action@v5
         with:
           context: .
@@ -104,6 +114,7 @@ jobs:
       
         
       - name: Docker Hub Description
+        if: needs.check.outputs.agent_readme_changed == 'true'
         uses: peter-evans/dockerhub-description@v4
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
