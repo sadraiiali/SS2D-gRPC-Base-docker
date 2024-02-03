@@ -79,7 +79,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.BASE_IMAGE }}
-          readme-filepath: ./images/rcss2d-grpc-base/README.md
+          readme-filepath: images/rcss2d-grpc-base/README.md
           short-description: "Base image for build rcss2d-grpc-agent"
 
   agent:
@@ -118,5 +118,5 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
           repository: ${{ env.AGENT_IMAGE }}
-          readme-filepath: ./images/rcss2d-grpc-agent/README.md
+          readme-filepath: images/rcss2d-grpc-agent/README.md
           short-description: "Agent image for rcss2d-grpc-server"
