@@ -5,6 +5,14 @@ on:
     branches:
       - "master"
 
+
+
+env:
+  BASE_IMAGE: sadraiiali/rcss2d-grpc-base
+  BASE_TAG: ubuntu-24.04
+
+  AGENT_IMAGE: sadraiiali/rcss2d-grpc-agent
+  AGENT_TAG: latest
 jobs:
   check:
     name: Check for changes
@@ -41,22 +49,31 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v4
-      # - name: Set up QEMU
-      #   uses: docker/setup-qemu-action@v3
-      # - name: Set up Docker Buildx
-      #   uses: docker/setup-buildx-action@v3
-      # - name: Login to Docker Hub
-      #   uses: docker/login-action@v3
-      #   with:
-      #     username: ${{ secrets.DOCKERHUB_USERNAME }}
-      #     password: ${{ secrets.DOCKERHUB_TOKEN }}
-      # - name: Build and push GRPC Build Base
-      #   uses: docker/build-push-action@v5
-      #   with:
-      #     context: .
-      #     file: ./images/rcss2d-grpc-base/Dockerfile
-      #     push: true
-      #     tags: sadraiiali/rcss2d-grpc-base:ubuntu-24.04
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push GRPC Build Base
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          file: ./images/rcss2d-grpc-base/Dockerfile
+          push: true
+          tags: "${{ env.BASE_IMAGE }}:${{ env.BASE_TAG }}"
+
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ env.BASE_IMAGE }}
+          readme-filepath : ./images/rcss2d-grpc-base/README.md
+          short-description: "Base image for build rcss2d-grpc-agent"
 
   agent:
     needs: [check,base]
@@ -81,4 +98,14 @@ jobs:
           context: .
           file: ./images/rcss2d-grpc-agent/Dockerfile
           push: true
-          tags: sadraiiali/rcss2d-grpc-agent:latest
+          tags: "${{ env.AGENT_IMAGE }}:${{ env.AGENT_TAG }}"
+      
+        
+      - name: Docker Hub Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PASSWORD }}
+          repository: ${{ env.AGENT_IMAGE }}
+          readme-filepath : ./images/rcss2d-grpc-agent/README.md
+          short-description: "Agent image for rcss2d-grpc-server"
