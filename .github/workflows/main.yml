@@ -10,8 +10,8 @@ jobs:
     name: Check for changes
     runs-on: ubuntu-latest
     outputs:
-      base_changed: ${{ steps.filter.outputs.base_changed }}
-      code_changed: ${{ steps.filter.outputs.code_changed }}
+      base_changed: ${{ steps.filter.outputs.base }}
+      code_changed: ${{ steps.filter.outputs.code }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
