@@ -30,14 +30,13 @@ jobs:
         with:
           filters: |
             base:
-              - 'images/rcss2d-grpc-base/**'
-              - '!images/rcss2d-grpc-agent/README.md'
+              - 'images/rcss2d-grpc-base/Dockerfile'
             base_readme:
               - 'images/rcss2d-grpc-base/README.md'
             code:
               - 'grpc/**'
-              - 'images/rcss2d-grpc-agent/**'
-              - '!images/rcss2d-grpc-agent/README.md'
+              - 'images/rcss2d-grpc-agent/Dockerfile'
+              - 'images/rcss2d-grpc-agent/docker-entrypoint.sh'
               - 'm4/**'
               - 'src/**'
               - 'ssil/**'
