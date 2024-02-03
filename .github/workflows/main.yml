@@ -49,8 +49,9 @@ jobs:
     name: Build & Push GRPC Build Base
     steps:
       - name: Checkout
-        if: needs.check.outputs.base_changed == 'true'
+        if: needs.check.outputs.base_changed == 'true' || needs.check.outputs.base_readme_changed == 'true'
         uses: actions/checkout@v4
+
       - name: Set up QEMU
         if: needs.check.outputs.base_changed == 'true'
         uses: docker/setup-qemu-action@v3
@@ -90,6 +91,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+
+        
       - name: Set up QEMU
         if: needs.check.outputs.code_changed == 'true'  || needs.check.outputs.base_changed == 'true'
         uses: docker/setup-qemu-action@v3
