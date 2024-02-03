@@ -7,7 +7,7 @@ on:
 
 jobs:
   check:
-    name: Check for base changes
+    name: Check for changes
     runs-on: ubuntu-latest
     outputs:
       base_changed: ${{ steps.filter.outputs.base_changed }}
