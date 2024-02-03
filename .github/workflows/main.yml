@@ -56,19 +56,11 @@ jobs:
           tags: sadraiiali/rcss2d-grpc-base:ubuntu-24.04
 
   agent:
-    needs: check
+    needs: [check,base]
     if: needs.check.outputs.code_changed == 'true' || needs.check.outputs.base_changed == 'true'
     runs-on: ubuntu-latest
     name: Build & Push GRPC Agent
     steps:
-      - if: needs.check.outputs.base_changed == 'true'
-        name: Wait for Build Base
-        uses: lewagon/wait-on-check-action@v1.3.1
-        with:
-          ref: ${{ github.ref }}
-          check-name: 'base'
-          repo-token: ${{ secrets.GITHUB_TOKEN }}
-          wait-interval: 10
       - name: Checkout
         uses: actions/checkout@v4
       - name: Set up QEMU
