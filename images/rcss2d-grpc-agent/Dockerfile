@@ -2,7 +2,7 @@
 # build stage
 #------------------------------------------------------
 
-FROM sadraiiali/rcss2d-grpc-base:ubuntu-24.04 AS BUILD
+FROM sadraiiali/rcss2d-grpc-base:ubuntu-20.04 AS BUILD
 
 WORKDIR /app
 
@@ -33,7 +33,7 @@ RUN mkdir -p /app/bin \
 
 # DEPLOY STAGE
 #------------------------------------------------------
-FROM ubuntu:24.04
+FROM ubuntu:20.04
 
 WORKDIR /app
 ENV TEAM_NAME=teamname

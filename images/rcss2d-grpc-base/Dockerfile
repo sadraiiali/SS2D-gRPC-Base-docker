@@ -43,7 +43,6 @@ RUN mkdir -p $RCSC_LIB_PATH \
     && make -j11 \
     && make install
 
-RUN 
 
 # Install grpc from source
 RUN git clone --recurse-submodules -b v1.60.0 --depth 1 --shallow-submodules https://github.com/grpc/grpc grpc-git \
@@ -66,7 +65,7 @@ RUN apt-get clean && rm -rf /var/lib/apt/lists/*
 
 
 #------------------------------------------------------
-FROM ubuntu:24.04
+FROM ubuntu:20.04
 WORKDIR /app
 COPY --from=BUILD /root/.local /root/.local
 
