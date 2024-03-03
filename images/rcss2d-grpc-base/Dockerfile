@@ -2,7 +2,7 @@
 # build stage
 #------------------------------------------------------
 
-FROM ubuntu:24.04 AS BUILD
+FROM ubuntu:20.04 AS BUILD
 
 WORKDIR /app
 

@@ -7,7 +7,7 @@ on:
 
 env:
   BASE_IMAGE: sadraiiali/rcss2d-grpc-base
-  BASE_TAG: ubuntu-24.04
+  BASE_TAG: ubuntu-20.04
 
   AGENT_IMAGE: sadraiiali/rcss2d-grpc-agent
   AGENT_TAG: latest
